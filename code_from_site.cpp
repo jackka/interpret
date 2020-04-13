@@ -1,5 +1,6 @@
-//Пример реализации на Си++ интерпретатора модельного языка
-/* 02.04.2020 */
+// Interpreter C++
+// Made by Mishukov Konstantin
+// 04.09.2019
 #include <iostream>
 #include <string>
 #include <cstdio>
@@ -12,18 +13,18 @@
 using namespace std;
  
 enum type_of_lex {
-  LEX_NULL,                                                                                   /* 0*/
-  LEX_AND, LEX_BEGIN, LEX_BOOL, LEX_DO, LEX_ELSE, LEX_END, LEX_IF, LEX_FALSE, LEX_INT,        /* 9*/
-  LEX_NOT, LEX_OR, LEX_PROGRAM, LEX_READ, LEX_THEN, LEX_TRUE, LEX_VAR, LEX_WHILE, LEX_WRITE,  /*18*/
-  LEX_FIN,                                                                                    /*19*/
-  LEX_SEMICOLON, LEX_COMMA, LEX_COLON, LEX_ASSIGN, LEX_LPAREN, LEX_RPAREN, LEX_EQ, LEX_LSS,   /*27*/
-  LEX_GTR, LEX_PLUS, LEX_MINUS, LEX_TIMES, LEX_SLASH, LEX_LEQ, LEX_NEQ, LEX_GEQ,              /*35*/
-  LEX_NUM,                                                                                    /*36*/
-  LEX_ID,                                                                                     /*37*/
-  POLIZ_LABEL,                                                                                /*38*/
-  POLIZ_ADDRESS,                                                                              /*39*/
-  POLIZ_GO,                                                                                   /*40*/
-  POLIZ_FGO                                                                                   /*41*/
+  LEX_NULL,      /*  0 */
+  LEX_AND, LEX_BEGIN, LEX_BOOL, LEX_DO, LEX_ELSE, LEX_END, LEX_IF, LEX_FALSE, LEX_INT,       /*  9 */
+  LEX_NOT, LEX_OR, LEX_PROGRAM, LEX_READ, LEX_THEN, LEX_TRUE, LEX_VAR, LEX_WHILE, LEX_WRITE, /* 18 */
+  LEX_FIN,       /* 19 */
+  LEX_SEMICOLON, LEX_COMMA, LEX_COLON, LEX_ASSIGN, LEX_LPAREN, LEX_RPAREN, LEX_EQ, LEX_LSS,  /* 27 */
+  LEX_GTR, LEX_PLUS, LEX_MINUS, LEX_TIMES, LEX_SLASH, LEX_LEQ, LEX_NEQ, LEX_GEQ,             /* 35 */
+  LEX_NUM,       /* 36 */
+  LEX_ID,        /* 37 */
+  POLIZ_LABEL,   /* 38 */
+  POLIZ_ADDRESS, /* 39 */
+  POLIZ_GO,      /* 40 */
+  POLIZ_FGO      /* 41 */
 };
  
 /////////////////////////  Класс Lex  //////////////////////////
@@ -132,10 +133,10 @@ public:
  
 const char *
 Scanner::TW    [] = { "", "and", "begin", "bool", "do", "else", "end", "if", "false", "int", "not", "or", "program",
-                      "read", "then", "true", "var", "while", "write", NULL };
+                      "read", "then", "true", "var", "while", "write", NULL }; // Word
  
 const char *
-Scanner::TD    [] = { "@", ";", ",", ":", ":=", "(", ")", "=", "<", ">", "+", "-", "*", "/", "<=", "!=", ">=", NULL };
+Scanner::TD    [] = { "@", ";", ",", ":", ":=", "(", ")", "=", "<", ">", "+", "-", "*", "/", "<=", "!=", ">=", NULL }; // Digit
  
 Lex Scanner::get_lex () {
     enum    state { H, IDENT, NUMB, COM, ALE, NEQ };
@@ -302,6 +303,7 @@ void Parser::analyze () {
   P();
   if (c_type != LEX_FIN)
     throw curr_lex;
+    //for_each( poliz.begin(), poliz.end(), [](Lex l){ cout << l; });
   for (Lex l : poliz) 
     cout << l;
   cout << endl << "Yes!!!" << endl;
