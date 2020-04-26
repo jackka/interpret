@@ -27,6 +27,21 @@ enum type_of_lex {
     POLIZ_FGO                                                                                   /*41*/
 };
 
+const char* type_of_lex_str[] = {
+    "LEX_NULL",
+    "LEX_AND","LEX_BEGIN","LEX_BOOL","LEX_DO","LEX_ELSE","LEX_END","LEX_IF","LEX_FALSE","LEX_INT",
+    "LEX_NOT","LEX_OR","LEX_PROGRAM","LEX_READ","LEX_THEN","LEX_TRUE","LEX_VAR","LEX_WHILE","LEX_WRITE",
+    "LEX_FIN",
+    "LEX_SEMICOLON","LEX_COMMA","LEX_COLON","LEX_ASSIGN","LEX_LPAREN","LEX_RPAREN","LEX_EQ","LEX_LSS",
+    "LEX_GTR","LEX_PLUS","LEX_MINUS","LEX_TIMES","LEX_SLASH","LEX_LEQ","LEX_NEQ","LEX_GEQ",
+    "LEX_NUM",
+    "LEX_ID",
+    "POLIZ_LABEL",
+    "POLIZ_ADDRESS",
+    "POLIZ_GO",
+    "POLIZ_FGO"
+};
+
 /////////////////////////  Класс Lex  //////////////////////////
 
 class Lex {
@@ -123,11 +138,11 @@ Lex Scanner::get_lex() {
         switch (CS) {
         case H:
             if (c == ' ' || c == '\n' || c == '\r' || c == '\t');
-            else if (isalpha(c)) {
+            else if ((c>=-1 && c<=255) && isalpha(c)) {
                 buf.push_back(c);
                 CS = IDENT;
             }
-            else if (isdigit(c)) {
+            else if ((c >= -1 && c <= 255) && isdigit(c)) {
                 d = c - '0';
                 CS = NUMB;
             }
@@ -209,7 +224,7 @@ Lex Scanner::get_lex() {
     } while (true);
 }
 
-ostream& operator<< (ostream& s, Lex l) {
+ostream& operator<< (ostream& s, Lex l) { // форматированный вывод
     string t;
     if (l.t_lex <= 18)
         t = Scanner::TW[l.t_lex];
@@ -229,7 +244,7 @@ ostream& operator<< (ostream& s, Lex l) {
         t = "!F";
     else
         throw l;
-    s << '(' << t << ',' << l.v_lex << ");" << endl;
+    s << type_of_lex_str[l.t_lex] << '(' << t << ',' << l.v_lex << ");" << endl;
     return s;
 }
 
@@ -258,12 +273,10 @@ public:
 };
 
 void Parser::analyze() {
-    gl();
-    if (c_type != LEX_FIN)
-        throw curr_lex;
-    for (Lex l : poliz)
-        cout << l;
-    cout << endl << "Yes!!!" << endl;
+    while (true) {
+        gl();
+        cout << curr_lex << endl;
+    }
 }
 
 class Interpretator {
@@ -288,6 +301,8 @@ int main() {
         return 0;
     }
     catch (char c) {
+        if (c == EOF)  // лексичекский анализ закончивается с концом файла
+            return 0;
         cout << "unexpected symbol " << c << endl;
         return 1;
     }
