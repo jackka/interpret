@@ -1,0 +1,29 @@
+program ab;
+1+234*4;
+a = 2;
+if (a<= 3) while
+34.55;
+1;
+"adfsgdf";
+if(5>8)
+else(6!=7)
+DO WHILE
+do while
+for(8==4)
+continue
+8=7;
+88*66/888
+break
+not
+5 and 6
+1 or 4
+read 
+write
+
+
+
+
+
+
+
+

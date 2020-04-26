@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConsoleApplication1.cpp">
+    <ClCompile Include="lexical_analyser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

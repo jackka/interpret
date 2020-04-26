@@ -712,25 +712,25 @@ void Executer::execute(vector<Lex>& poliz) {
             TID[i].put_assign();
             break;
 
-        case LEX_PLUS:
+        case LEX_PLUS:  // сложение 
             from_st(args, i);
             from_st(args, j);
             args.push(i + j);
             break;
 
-        case LEX_TIMES:
+        case LEX_TIMES: // умножение 
             from_st(args, i);
             from_st(args, j);
             args.push(i * j);
             break;
 
-        case LEX_MINUS:
+        case LEX_MINUS: // вычитание
             from_st(args, i);
             from_st(args, j);
             args.push(j - i);
             break;
 
-        case LEX_SLASH:
+        case LEX_SLASH: // деление
             from_st(args, i);
             from_st(args, j);
             if (!i) {
@@ -811,7 +811,7 @@ int main() {
 
 
      try {
-        Interpretator I("prog.txt");
+        Interpretator I("test_file.txt");
         I.interpretation();
         return 0;
     }
