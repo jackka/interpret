@@ -33,7 +33,7 @@ const char* type_of_lex_str[] = {
     "LEX_NOT","LEX_OR","LEX_PROGRAM","LEX_READ","LEX_THEN","LEX_TRUE","LEX_VAR","LEX_WHILE","LEX_WRITE",
     "LEX_FIN",
     "LEX_SEMICOLON","LEX_COMMA","LEX_COLON","LEX_ASSIGN","LEX_LPAREN","LEX_RPAREN","LEX_EQ","LEX_LSS",
-    "LEX_GTR","LEX_PLUS","LEX_MINUS","LEX_TIMES","LEX_SLASH","LEX_LEQ","LEX_NEQ","LEX_GEQ",
+    "LEX_GTR","LEX_PLUS","LEX_MINUS","LEX_TIMES","LEX_SLASH","LEX_LEQ","LEX_NEQ","LEX_GEQ", 
     "LEX_NUM",
     "LEX_ID",
     "POLIZ_LABEL",
@@ -126,10 +126,10 @@ Scanner::TW[] = { "", "and", "begin", "bool", "do", "else", "end", "if", "false"
                       "read", "then", "true", "var", "while", "write", NULL };
 
 const char*
-Scanner::TD[] = { "@", ";", ",", ":", ":=", "(", ")", "=", "<", ">", "+", "-", "*", "/", "<=", "!=", ">=", NULL };
+Scanner::TD[] = { "@", ";", ",", ":", "=", "(", ")", "==", "<", ">", "+", "-", "*", "/", "<=", "!=", ">=", NULL };
 
 Lex Scanner::get_lex() {
-    enum    state { H, IDENT, NUMB, COM, ALE, NEQ };
+    enum    state { H, IDENT, NUMB, COM, ALE, AORE, NEQ };
     int     d, j;
     string  buf;
     state   CS = H;
@@ -149,9 +149,13 @@ Lex Scanner::get_lex() {
             else if (c == '{') {
                 CS = COM;
             }
-            else if (c == ':' || c == '<' || c == '>') {
+            else if (c == '<' || c == '>') {
                 buf.push_back(c);
                 CS = ALE;
+            }
+            else if (c == '=') {
+                buf.push_back(c);
+                CS = AORE;
             }
             else if (c == '@')
                 return Lex(LEX_FIN);
@@ -200,6 +204,18 @@ Lex Scanner::get_lex() {
                 throw c;
             break;
         case ALE:
+            if (c == '=') {
+                buf.push_back(c);
+                j = look(buf, TD);
+                return Lex((type_of_lex)(j + (int)LEX_FIN), j);
+            }
+            else {
+                ungetc(c, fp);
+                j = look(buf, TD);
+                return Lex((type_of_lex)(j + (int)LEX_FIN), j);
+            }
+            break;
+        case AORE:
             if (c == '=') {
                 buf.push_back(c);
                 j = look(buf, TD);
